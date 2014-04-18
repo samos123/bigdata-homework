@@ -43,7 +43,6 @@ public class ImageMapper extends MapReduceBase implements
 		ColorLayout colorLayout = new ColorLayout();
 		colorLayout.extract(image);
 		double[] histogram = colorLayout.getDoubleHistogram();
-		reporter.setStatus("Test Sam: " + imageFilePath);
 
 		String feature = imageFilePath.replaceFirst("-images", "-features");
 		feature = feature.substring(0, feature.length() - 4);
