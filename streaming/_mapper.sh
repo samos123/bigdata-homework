@@ -23,4 +23,11 @@ sed -i s+^+/user/mrtest/output/$filename-images/+g $filename-images-created
 /home/hadoop/hadoop/bin/hadoop fs -put $filename-images-created \
     /user/mrtest/output/images-created/$filename-images-created
 
+
+
+# Extract audio from video
+/usr/local/ffmpeg/bin/ffmpeg -i $filename -vn -ac 2 -ar 44100 -ab 320k -f wav $filename.wav < /dev/null
+/home/hadoop/hadoop/bin/hadoop fs -put $filename.wav /user/mrtest/output/$filename.wav
+
+
 done
