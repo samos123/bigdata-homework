@@ -10,3 +10,6 @@ hadoop jar /home/hadoop/hadoop/contrib/streaming/hadoop-streaming-1.0.4.jar \
 #-D mapred.map.tasks.speculative.execution=false \
 #        -reducer _reducer.sh \
 #        -file /home/dxp/_reducer.sh \
+
+hadoop fs -rmr /user/mrtest/feature-output
+hadoop jar /home/dxp/bigdata.jar /user/mrtest/output/images-created/ /user/mrtest/feature-output
