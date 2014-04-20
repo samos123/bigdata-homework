@@ -1,8 +1,11 @@
 package org.tsinghua.bigdata;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 
@@ -23,6 +26,8 @@ import org.apache.hadoop.mapred.OutputCollector;
 import org.apache.hadoop.mapred.Reporter;
 import org.apache.hadoop.mapred.Mapper;
 import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 @SuppressWarnings("rawtypes")
 public class ImageMapper extends MapReduceBase implements
@@ -35,31 +40,30 @@ public class ImageMapper extends MapReduceBase implements
 		String imageFilePath = value.toString();
 		FileSystem fs = FileSystem.get(new Configuration());
 
+		// Download the image from hdfs and store it into memory
 		String namenode = "hdfs://pc201:9000";
 		FSDataInputStream fsd = fs.open(new Path(namenode + imageFilePath));
 		ImageIO.setUseCache(false);
 		BufferedImage image = ImageIO.read(fsd);
-
-		ColorLayout colorLayout = new ColorLayout();
-		colorLayout.extract(image);
-		double[] histogram = colorLayout.getDoubleHistogram();
-
+		
+		// Extract 5 features see ImageFeature for details
+		ImageFeature imgFeature = new ImageFeature(image);
+		
+		// Replace the word images with features in the directory path
+		// of the newly created feature files. Also append .json
 		String feature = imageFilePath.replaceFirst("-images", "-features");
 		feature = feature.substring(0, feature.length() - 4);
+		feature = feature + ".json";
+		// Create a new file on HDFS
 		FSDataOutputStream fos = fs.create(new Path(namenode + feature));
-		DataOutputStream dos = new DataOutputStream(fos);
-		for (double d : histogram) {
-			dos.writeDouble(d);
-		}
-		dos.flush();
-		dos.close();
+		
+		// Write the JSON string to our created file on HDFS
+		BufferedWriter br = new BufferedWriter( new OutputStreamWriter( fos, "UTF-8" ) );
+		br.write(imgFeature.toJSONString());
+		br.close();
 		fos.close();
 	}
 
-	/**
-	 * The actual main() method for our program; this is the "driver" for the
-	 * MapReduce job.
-	 */
 	public static void main(String[] args) {
 		JobConf conf = new JobConf(ImageMapper.class);
 		conf.setJobName("ImageMapper");
@@ -72,7 +76,6 @@ public class ImageMapper extends MapReduceBase implements
 
 		conf.setMapperClass(ImageMapper.class);
 		conf.setNumReduceTasks(0);
-
 
 		try {
 			JobClient.runJob(conf);
