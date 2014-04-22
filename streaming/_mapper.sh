@@ -3,13 +3,15 @@
 while read file
 do
 
+file=`echo $file | cut -d " " -f2-`
 filename=`basename $file`
 /home/hadoop/hadoop/bin/hadoop fs -get $file $filename
 
 mkdir -p $filename-images
 
 # Extract images from every video
-/usr/local/ffmpeg/bin/ffmpeg -i $filename $filename-images/image%d.jpg < /dev/null
+# 1 frame per seconds is -r 1
+/usr/local/ffmpeg/bin/ffmpeg -i $filename -r 1 $filename-images/image%d.jpg < /dev/null
 
 #ls $filename-images | xargs -I {} -n 1 java -jar /home/dxp/bigdata.jar $filename-images/{} $filename-features/{}
 ls -1 $filename-images > $filename-images-created
@@ -24,9 +26,8 @@ sed -i s+^+/user/mrtest/output/$filename-images/+g $filename-images-created
     /user/mrtest/output/images-created/$filename-images-created
 
 
-
 # Extract audio from video
-/usr/local/ffmpeg/bin/ffmpeg -i $filename -vn -ac 2 -ar 44100 -ab 320k -f wav $filename.wav < /dev/null
+/usr/local/ffmpeg/bin/ffmpeg -i $filename -vn -ac 1 -ar 16000  -f wav $filename.wav < /dev/null
 /home/hadoop/hadoop/bin/hadoop fs -put $filename.wav /user/mrtest/output/$filename.wav
 
 

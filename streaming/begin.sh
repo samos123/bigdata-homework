@@ -1,11 +1,18 @@
 #!/bin/sh
 
 
+# Cleanup everything from last run
+hadoop fs -rmr /user/mrtest/output
+
+
 # Extract the images and audio files of the videos using ffmpeg
 hadoop jar /home/hadoop/hadoop/contrib/streaming/hadoop-streaming-1.0.4.jar \
         -D mapred.task.timeout=999999999 \
         -D mapred.reduce.tasks=0\
-        -input /user/mrtest/input_txt/input.txt \
+        -D mapred.map.tasks=50\
+        -D mapred.tasktracker.map.tasks.maximum=200 \
+        -inputformat org.apache.hadoop.mapred.lib.NLineInputFormat \
+        -input /user/mrtest/input/input_dataset \
         -output /user/mrtest/output \
         -mapper _mapper.sh \
         -file /home/dxp/_mapper.sh \
