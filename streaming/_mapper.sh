@@ -1,13 +1,16 @@
 #!/bin/bash
 
+mkdir m
+mount -t tmpfs -o size=2G,mode=0744 tmpfs m
+cd m
+
 while read file
 do
 
 file=`echo $file | cut -d " " -f2-`
 filename=`basename $file`
-/home/hadoop/hadoop/bin/hadoop fs -get $file $filename
-
 mkdir -p $filename-images
+/home/hadoop/hadoop/bin/hadoop fs -get $file $filename
 
 # Extract images from every video
 # 1 frame per seconds is -r 1
@@ -25,10 +28,13 @@ sed -i s+^+/user/mrtest/output/$filename-images/+g $filename-images-created
 /home/hadoop/hadoop/bin/hadoop fs -put $filename-images-created \
     /user/mrtest/output/images-created/$filename-images-created
 
-
 # Extract audio from video
 /usr/local/ffmpeg/bin/ffmpeg -i $filename -vn -ac 1 -ar 16000  -f wav $filename.wav < /dev/null
 /home/hadoop/hadoop/bin/hadoop fs -put $filename.wav /user/mrtest/output/$filename.wav
 
+rm {$filename-images,$filename,$filename-images-created,$filename.wav} -rf
 
 done
+
+cd ..
+umount m
