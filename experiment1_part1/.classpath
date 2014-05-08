@@ -2,15 +2,20 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="/home/samos/workspace/bigdata/lib/hadoop-client-1.0.4.jar"/>
-	<classpathentry kind="lib" path="/home/samos/workspace/bigdata/lib/hadoop-core-1.0.4.jar"/>
-	<classpathentry kind="lib" path="/home/samos/workspace/bigdata/lib/hadoop-tools-1.0.4.jar"/>
-	<classpathentry kind="lib" path="/home/samos/workspace/bigdata/lib/JOpenSurf.jar"/>
-	<classpathentry kind="lib" path="/home/samos/workspace/bigdata/lib/commons-math3-3.2.jar"/>
-	<classpathentry kind="lib" path="/home/samos/workspace/bigdata/lib/lire.jar"/>
-	<classpathentry kind="lib" path="/home/samos/workspace/bigdata/lib/lucene-analyzers-common-4.2.1.jar"/>
-	<classpathentry kind="lib" path="/home/samos/workspace/bigdata/lib/lucene-core-4.2.1.jar"/>
-	<classpathentry kind="lib" path="/home/samos/workspace/bigdata/lib/lucene-queryparser-4.2.1.jar"/>
 	<classpathentry kind="lib" path="lib/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/JOpenSurf.jar"/>
+	<classpathentry kind="lib" path="lib/commons-math3-3.2.jar"/>
+	<classpathentry kind="lib" path="lib/hadoop-ant-1.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/hadoop-client-1.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/hadoop-core-1.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/hadoop-examples-1.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/hadoop-minicluster-1.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/hadoop-test-1.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/hadoop-tools-1.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/lire.jar"/>
+	<classpathentry kind="lib" path="lib/lucene-analyzers-common-4.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/lucene-core-4.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/lucene-queryparser-4.2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
