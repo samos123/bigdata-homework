@@ -3,6 +3,7 @@ package org.tsinghua.bigdata;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,8 +56,6 @@ public class Searcher {
             	newValue = (1.0 / (score + 1));
             }
             dm.put(videoName, newValue);
-            
-            //System.out.println(hits.score(i) + ": \t" + this.extractVideoName(fileName));
         }
 	}
 	
@@ -65,8 +64,9 @@ public class Searcher {
         extractScores(edgeSearcher.search(img, ir));
         extractScores(opponentSearcher.search(img, ir));
         dm = MapUtil.sortByValue(dm);
+        PrintStream out = new PrintStream(System.out, true, "UTF-8");
         for(Map.Entry<String, Double> entry : dm.entrySet()) {
-        	System.out.println(entry.getKey() +": \t" + entry.getValue().toString());
+        	out.println(entry.getKey() +"," + entry.getValue().toString());
         }
 	}
 	
@@ -95,8 +95,6 @@ public class Searcher {
         }
         
         new Searcher(img).topMovies();
-
- 
 
     }
 }
