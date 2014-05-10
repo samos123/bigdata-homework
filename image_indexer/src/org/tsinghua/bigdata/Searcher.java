@@ -27,74 +27,74 @@ public class Searcher {
 	public BufferedImage img;
 	public IndexReader ir;
 	Map<String, Double> dm;
-	
+
 	public Searcher(BufferedImage img) throws IOException {
-        ceddSearcher = ImageSearcherFactory.createCEDDImageSearcher(100);
-        edgeSearcher = ImageSearcherFactory.createEdgeHistogramImageSearcher(100);
-        opponentSearcher = ImageSearcherFactory.createOpponentHistogramSearcher(100);
-        ir = DirectoryReader.open(FSDirectory.open(new File("index")));
-        this.img = img;
-        dm = new HashMap<String, Double>();
+		ceddSearcher = ImageSearcherFactory.createCEDDImageSearcher(100);
+		edgeSearcher = ImageSearcherFactory
+				.createEdgeHistogramImageSearcher(100);
+		opponentSearcher = ImageSearcherFactory
+				.createOpponentHistogramSearcher(100);
+		ir = DirectoryReader.open(FSDirectory.open(new File("index")));
+		this.img = img;
+		dm = new HashMap<String, Double>();
 	}
 
-	
 	private String extractVideoName(String fileName) {
-        String[] parts = fileName.split("/");
-        fileName = parts[parts.length - 1];
-        return fileName.split("\\.")[0];		
+		String[] parts = fileName.split("/");
+		fileName = parts[parts.length - 1];
+		return fileName.split("\\.")[0];
 	}
-	
-	private void extractScores(ImageSearchHits hits) {
-        for (int i = 0; i < hits.length(); i++) {
-            String fileName = hits.doc(i).getValues(DocumentBuilder.FIELD_NAME_IDENTIFIER)[0];
-            String videoName = this.extractVideoName(fileName);
-            float score = hits.score(i);
-            double newValue;
-            if (dm.containsKey(videoName)) {
-            	newValue = dm.get(videoName) + (1.0 / (score + 0.5));
-            } else {
-            	newValue = (1.0 / (score + 1));
-            }
-            dm.put(videoName, newValue);
-        }
-	}
-	
-	public void topMovies() throws IOException {
-        extractScores(ceddSearcher.search(img, ir));
-        extractScores(edgeSearcher.search(img, ir));
-        extractScores(opponentSearcher.search(img, ir));
-        dm = MapUtil.sortByValue(dm);
-        PrintStream out = new PrintStream(System.out, true, "UTF-8");
-        for(Map.Entry<String, Double> entry : dm.entrySet()) {
-        	out.println(entry.getKey() +"," + entry.getValue().toString());
-        }
-	}
-	
-	
-	
-	
-    public static void main(String[] args) throws IOException {
-        // Checking if arg[0] is there and if it is an image.
-        BufferedImage img = null;
-        boolean passed = false;
-        if (args.length > 0) {
-            File f = new File(args[0]);
-            if (f.exists()) {
-                try {
-                    img = ImageIO.read(f);
-                    passed = true;
-                } catch (IOException e) {
-                    e.printStackTrace();  
-                }
-            }
-        }
-        if (!passed) {
-            System.out.println("No image given as first argument.");
-            System.out.println("Run \"Searcher <query image>\" to search for <query image>.");
-            System.exit(1);
-        }
-        
-        new Searcher(img).topMovies();
 
-    }
+	private void extractScores(ImageSearchHits hits) {
+		for (int i = 0; i < hits.length(); i++) {
+			String fileName = hits.doc(i).getValues(
+					DocumentBuilder.FIELD_NAME_IDENTIFIER)[0];
+			String videoName = this.extractVideoName(fileName);
+			float score = hits.score(i);
+			double newValue;
+			if (dm.containsKey(videoName)) {
+				newValue = dm.get(videoName) + (1.0 / (score + 1));
+			} else {
+				newValue = (1.0 / (score + 1));
+			}
+			dm.put(videoName, newValue);
+		}
+	}
+
+	public void topMovies() throws IOException {
+		extractScores(ceddSearcher.search(img, ir));
+		extractScores(edgeSearcher.search(img, ir));
+		extractScores(opponentSearcher.search(img, ir));
+		dm = MapUtil.sortByValue(dm);
+		PrintStream out = new PrintStream(System.out, true, "UTF-8");
+		for (Map.Entry<String, Double> entry : dm.entrySet()) {
+			out.println(entry.getKey() + "," + entry.getValue().toString());
+		}
+	}
+
+	public static void main(String[] args) throws IOException {
+		// Checking if arg[0] is there and if it is an image.
+		BufferedImage img = null;
+		boolean passed = false;
+		if (args.length > 0) {
+			File f = new File(args[0]);
+			if (f.exists()) {
+				try {
+					img = ImageIO.read(f);
+					passed = true;
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		if (!passed) {
+			System.out.println("No image given as first argument.");
+			System.out
+					.println("Run \"Searcher <query image>\" to search for <query image>.");
+			System.exit(1);
+		}
+
+		new Searcher(img).topMovies();
+
+	}
 }
