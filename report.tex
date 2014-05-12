@@ -1,0 +1,85 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[hscale=0.7,vscale=0.5]{geometry}
+\usepackage{lipsum}
+\usepackage{fullpage}
+
+\pagenumbering{gobble}
+
+% Title Page
+
+\twocolumn
+
+\begin{document}
+\section{Introduction}
+This document describes our efforts, steps and results in creating
+a content-based video search engine. That is to search a database
+of videos using an image or audio fragment as 'search term' and to
+search the acual video content(frames or audio of the video).
+
+The following tasks have been accomplished in order to create
+our search engine:
+\begin{enumerate}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{1pt}
+  \setlength{\parsep}{0pt}
+ \item Extract frames and audio from a large amount of videos in a distributed way using Hadoop.
+ \item From those extracted frames and audio, extract low level features.
+ \item Create a searcher which can search related images/audio fragments by using the low level features.
+ \item Create a web interface accepts as input an image or an audio fragment and displays related videos.
+\end{enumerate}
+
+
+\section{Goal}
+Through this experiment we wish the achieve the following goals:
+\begin{enumerate}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{1pt}
+  \setlength{\parsep}{0pt}
+ \item To gain deeper understanding of multimedia storage and management.
+ \item Gain skills in debugging and programming.
+ \item Improve teamwork
+\end{enumerate}
+
+
+\section{Environment}
+
+
+\section{Tools \& Libraries}
+
+
+\section{Method}
+
+\subsection{Distributed video processing}
+How did we extract frames and audio with Hadoop?
+
+
+\subsection{Image feature extraction}
+\subsection{Audio feature extraction}
+
+\subsection{Image Videos Searcher}
+\subsection{Audio Videos Searcher}
+
+\subsection{Web Interface}
+
+
+\section{Results}
+
+
+\section{Conclusion}
+
+
+\section{Responsibility table}
+
+
+\let\thefootnote\relax\footnote{Lin Haiyuang, Wei Chaohou, Dongzhao}
+
+\begin{thebibliography}{99}
+  \bibitem{lft}
+http://pwhois.org/lft/index.who
+  \bibitem{Scamper}
+http://www.caida.org/tools/measurement/scamper/
+  \bibitem{Gephi}
+https://gephi.org/
+\end{thebibliography} 
+
+\end{document}          
