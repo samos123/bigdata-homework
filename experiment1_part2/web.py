@@ -20,7 +20,7 @@ Bootstrap(app)
 @app.route('/', methods=['GET', 'POST'])
 def index():
     image_form = ImageForm()
-    audio_form = ImageForm()
+    audio_form = AudioForm()
     return render_template('index.html', image_form=image_form,
                            audio_form=audio_form)
 
@@ -64,8 +64,8 @@ def audio_search():
         results = results.split('\n')
         if not results[-1]: results = results[:-1]
         results = [row.split(':') for row in results]
-        results = [(row[0].decode("utf-8"), int(row[1])) for row in results]
-        results = sorted(results, key=lambda x: x[1])
+        results = [(row[0].decode("utf-8"), float(row[1])) for row in results]
+        results = sorted(results, key=lambda x: x[1], reverse=True)
         os.remove(tmp_filename)
     else:
         results = []
