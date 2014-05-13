@@ -1,3 +1,4 @@
+from math import sqrt
 import os
 import tempfile
 import subprocess
@@ -64,8 +65,8 @@ def audio_search():
         results = results.split('\n')
         if not results[-1]: results = results[:-1]
         results = [row.split(':') for row in results]
-        results = [(row[0].decode("utf-8"), float(row[1])) for row in results]
-        results = sorted(results, key=lambda x: x[1], reverse=True)
+        results = [(row[0].decode("utf-8"), sqrt(int(row[1]))) for row in results]
+        results = sorted(results, key=lambda x: x[1])
         os.remove(tmp_filename)
     else:
         results = []
